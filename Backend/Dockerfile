@@ -5,7 +5,7 @@ WORKDIR /app
 # Copy the project source code and pom.xml into the container
 COPY . .
 # Build the Spring Boot application using Maven
-RUN mvn package -DskipTests
+RUN mvn package -DskipTests -e
 # run stage
 FROM openjdk:11-jre-slim
 # Set the working directory inside the container
