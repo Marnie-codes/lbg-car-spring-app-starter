@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  Backend:
+    image: marniecodes/lbg-car-spring-app-starter
+    build: ./Backend
+    ports:
+      - target: 80
+        published: 80
