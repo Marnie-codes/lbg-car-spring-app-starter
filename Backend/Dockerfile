@@ -13,6 +13,6 @@ WORKDIR /app
 # Copy the built JAR file from the build stage into the runtime stage
 COPY --from=build /app/target/*.jar ./app.jar
 
-EXPOSE 80
+EXPOSE 8000
 # Define the command to run the Spring Boot application
 CMD ["java", "-jar", "app.jar"]
