@@ -1,12 +1,18 @@
-# Build stage
-FROM maven:3.8.5-openjdk-17-slim AS build
+#build stage
+FROM maven:3.8.4-openjdk-11 AS build
+# Set the working directory inside the container
 WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline
+# Copy the project source code and pom.xml into the container
 COPY . .
-RUN mvn package && rm -rf target/src
+# Build the Spring Boot application using Maven
+RUN mvn package -DskipTests
+# run stage
+FROM openjdk:11-jre-slim
+# Set the working directory inside the container
+WORKDIR /app
+# Copy the built JAR file from the build stage into the runtime stage
+COPY --from=build /app/target/*.jar ./app.jar
 
-# Runtime stage
-FROM openjdk:17-alpine3.14
-COPY --from=build /app/target/*.jar cardatabase-0.0.1-SNAPSHOT.jar
-CMD ["java", "-jar", "cardatabase-0.0.1-SNAPSHOT.jar"]
+EXPOSE 80
+# Define the command to run the Spring Boot application
+CMD ["java", "-jar", "app.jar"]
